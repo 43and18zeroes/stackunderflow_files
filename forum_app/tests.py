@@ -3,6 +3,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth.models import User
 from forum_app.models import Question
+from forum_app.api.serializers import QuestionSerializer
 
 class LikeTests(APITestCase):
     
@@ -21,4 +22,7 @@ class QuestionTests(APITestCase):
     def test_detail_question(self):
         url = reverse('question-detail', kwargs={'pk': self.question.id})
         response = self.client.get(url)
+        expected_data = QuestionSerializer(self.question).data
+        
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, expected_data)
