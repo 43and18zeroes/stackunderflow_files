@@ -28,6 +28,7 @@ class QuestionTests(APITestCase):
                 'content':'1Content',
                 'author': self.user.id,
                 'category':'frontend'}
+        self.client.logout()
         
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
