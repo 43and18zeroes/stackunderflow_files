@@ -20,15 +20,14 @@ class QuestionTests(APITestCase):
         self.question = Question.objects.create(title='Text Question', content='Test Content', author=self.user, category='frontend')
         self.client = APIClient()
         self.client.login(username='testuser', password='testpassword')
-        
-        
+    
+    
     def test_list_post_question(self):
         url = reverse('question-list')
         data = {'title':'Question1',
                 'content':'1Content',
                 'author': self.user.id,
                 'category':'frontend'}
-        self.client.logout()
         
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -42,4 +41,8 @@ class QuestionTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictEqual(response.data, expected_data)
         self.assertJSONEqual(response.content, expected_data)
-        self.assertContains(response, 'title') # Ist ein Schlüssel namens title enthalten?
+        self.assertContains(response, 'title')
+        
+        self.question = Question.objects.create(title='Text Question', content='Test Content', author=self.user, category='frontend')
+        self.assertEqual(Question.objects.count(), 2)
+        self.assertEqual(Question.objects.get().author, self.user)
