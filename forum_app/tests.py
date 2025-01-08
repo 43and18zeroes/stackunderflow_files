@@ -25,4 +25,6 @@ class QuestionTests(APITestCase):
         expected_data = QuestionSerializer(self.question).data
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, expected_data)
+        self.assertDictEqual(response.data, expected_data)
+        self.assertJSONEqual(response.content, expected_data)
+        self.assertContains(response, 'title') # Ist ein Schlüssel namens title enthalten?
