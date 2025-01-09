@@ -14,7 +14,7 @@ class LikeTests(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.question = Question.objects.create(title='Text Question', content='Test Content', author=self.user, category='frontend')
-        self.url = "/api/forum/likes/"
+        self.url = "http://127.0.0.1:8000/api/forum/likes/"
         
         self.token = Token.objects.create(user=self.user)
         self.client = APIClient()
