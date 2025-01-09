@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from forum_app.models import Like, Question
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.authtoken.models import Token
+from rest_framework.test import APITestCase, APIClient
 
 class LikeTests(APITestCase):
     
@@ -14,6 +15,10 @@ class LikeTests(APITestCase):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.question = Question.objects.create(title='Text Question', content='Test Content', author=self.user, category='frontend')
         self.url = "/api/forum/likes/"
+        
+        self.token = Token.objects.create(user=self.user)
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
    
     def test_get_likes_list(self):
         response = self.client.get(self.url)
