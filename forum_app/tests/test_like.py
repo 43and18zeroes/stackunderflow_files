@@ -22,7 +22,7 @@ class LikeTests(APITestCase):
         
     def test_get_single_like(self):
         like = Like.objects.create(user=self.user, question=self.question)
-        url = f"/api/forum/likes/{like.id}/"
+        url = f"{self.url}{like.id}/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['id'], like.id)
@@ -37,7 +37,7 @@ class LikeTests(APITestCase):
         
     def test_delete_like(self):
         like = Like.objects.create(user=self.user, question=self.question)
-        url = f"/api/forum/likes/{like.id}/"
+        url = f"{self.url}{like.id}/"
         self.client.force_authenticate(user=self.user)
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
