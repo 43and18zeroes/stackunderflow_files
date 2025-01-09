@@ -16,8 +16,7 @@ class LikeTests(APITestCase):
         self.url = "/api/forum/likes/"
    
     def test_get_likes_list(self):
-        url = "http://127.0.0.1:8000/api/forum/likes/"
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsInstance(response.data, list)
         
