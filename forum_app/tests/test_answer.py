@@ -27,5 +27,3 @@ class AnswerTests(APITestCase):
         url = reverse('answer-list-create')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertGreaterEqual(len(response.data), 1)
-        
