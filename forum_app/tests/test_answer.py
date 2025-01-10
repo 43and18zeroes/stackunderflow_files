@@ -18,8 +18,7 @@ class AnswerTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         
-    # def test_answer_detail_url(self):
-    #     answer_id = 1
-    #     url = reverse('answer-detail', kwargs={'pk': answer_id})
-    #     response = self.client.get(url)
-    #     self.assertEqual(response.status_code, 404)  # Wenn kein Eintrag existiert
+    def test_answer_detail_url(self):
+        url = reverse('answer-detail', kwargs={'pk': self.question.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
