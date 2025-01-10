@@ -19,6 +19,6 @@ class AnswerTests(APITestCase):
         
         
     def test_answer_detail_url(self):
-        url = reverse('answer-detail', kwargs={'pk': self.question.id})
+        url = reverse('answer-detail', kwargs={'pk': self.answer.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
