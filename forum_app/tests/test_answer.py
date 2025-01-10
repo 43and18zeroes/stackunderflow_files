@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from forum_app.models import Answer, Question
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.authtoken.models import Token
+from rest_framework.test import APITestCase, APIClient
 
 class AnswerTests(APITestCase):
     
@@ -10,6 +11,10 @@ class AnswerTests(APITestCase):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.question = Question.objects.create(title='Text Question', content='Test Content', author=self.user, category='frontend')
         self.answer = Answer.objects.create(content='Test Content', author=self.user, question=self.question)
+        
+        self.token = Token.objects.create(user=self.user)
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         
         
     def test_answer_list_url(self):
