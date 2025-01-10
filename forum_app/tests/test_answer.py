@@ -17,13 +17,15 @@ class AnswerTests(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         
         
-    def test_answer_list_url(self):
-        url = reverse('answer-list-create')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        
-    def test_answer_detail_url(self):
+    def test_get_answer(self):
         url = reverse('answer-detail', kwargs={'pk': self.answer.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        
+    def test_get_answers(self):
+        url = reverse('answer-list-create')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(len(response.data), 1)
+        
