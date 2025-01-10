@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.urls import reverse
 from forum_app.models import Like, Question
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -14,11 +15,12 @@ class LikeTests(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.question = Question.objects.create(title='Text Question', content='Test Content', author=self.user, category='frontend')
-        self.url = "http://127.0.0.1:8000/api/forum/likes/"
+        # self.url = "http://127.0.0.1:8000/api/forum/likes/"
+        self.url = reverse('like-list')
         
-        self.token = Token.objects.create(user=self.user)
-        self.client = APIClient()
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        # self.token = Token.objects.create(user=self.user)
+        # self.client = APIClient()
+        # self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
    
     def test_get_likes_list(self):
         response = self.client.get(self.url)
