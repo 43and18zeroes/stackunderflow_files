@@ -133,7 +133,7 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
     ],
-    "DEFAULT_THROTTLE_RATES": {"anon": "5/day", "user": "6/day"},
+    "DEFAULT_THROTTLE_RATES": {"anon": "5/day", "user": "6/day", "question": "10/day"},
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
