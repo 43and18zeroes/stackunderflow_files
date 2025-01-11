@@ -8,4 +8,10 @@ class QuestionThrottle(UserRateThrottle):
         if request.method == "GET":
             return True
         
+        new_scope = 'question-' + request.method.lower()
+        if new_scope in self.THROTTLE_RATES:
+            self.scope = new_scope
+            self.rate = self.get_rate()
+            self.num_requests, self.durcation = self.parse_rate(self.rate)
+            
         return super().allow_request(request, view)
