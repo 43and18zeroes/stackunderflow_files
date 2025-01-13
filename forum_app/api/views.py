@@ -3,7 +3,7 @@ from .serializers import QuestionSerializer, AnswerSerializer, LikeSerializer
 from .throttling import QuestionThrottle, QuestionGetThrottle, QuestionPostThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from forum_app.models import Like, Question, Answer
-from rest_framework import viewsets, generics, permissions
+from rest_framework import viewsets, generics, permissions, filters
 from rest_framework.throttling import ScopedRateThrottle
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -30,8 +30,9 @@ class AnswerListCreateView(generics.ListCreateAPIView):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['author__username', 'content']
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['author__username']
+    search_fields = ['content']
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
