@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from forum_app.models import Like, Answer, Question
+from forum_app.models import FileUpload, Like, Answer, Question
+
+class FileUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FileUpload
+        fields = ['file', 'uploaded_at']
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:

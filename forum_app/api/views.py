@@ -1,11 +1,22 @@
 from .permissions import IsOwnerOrAdmin, CustomQuestionPermission
-from .serializers import QuestionSerializer, AnswerSerializer, LikeSerializer
+from .serializers import FileUploadSerializer, QuestionSerializer, AnswerSerializer, LikeSerializer
 from .throttling import QuestionThrottle, QuestionGetThrottle, QuestionPostThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from forum_app.models import Like, Question, Answer
-from rest_framework import viewsets, generics, permissions, filters
+from rest_framework import status, viewsets, generics, permissions, filters
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
+from rest_framework.views import APIView
+
+class FileUploadView(APIView):
+    def post(self, request, format=None):
+        serializer = FileUploadSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
