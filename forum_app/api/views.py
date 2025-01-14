@@ -4,7 +4,7 @@ from .throttling import QuestionThrottle, QuestionGetThrottle, QuestionPostThrot
 from django_filters.rest_framework import DjangoFilterBackend
 from forum_app.models import Like, Question, Answer
 from rest_framework import viewsets, generics, permissions, filters
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.throttling import ScopedRateThrottle
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -64,12 +64,18 @@ class LargeResultsSetPagination(PageNumberPagination):
     page_size = 5
     page_size_query_param = 'page_size'
     max_page_size = 100
+    
+class CustomLimitOffSetPagination(LimitOffsetPagination):
+    default_limit = 10
+    limit_query_param = "limit"
+    offset_query_param = "offset"
+    max_limit = 100
 
 class LikeViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
     permission_classes = [IsOwnerOrAdmin]
-    pagination_class = LargeResultsSetPagination
+    pagination_class = CustomLimitOffSetPagination
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
